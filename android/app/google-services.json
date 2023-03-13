@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "520901543892",
+    "project_id": "firetask-2e332",
+    "storage_bucket": "firetask-2e332.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:520901543892:android:36bf31998cdff43e45b841",
+        "android_client_info": {
+          "package_name": "com.example.firetask"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "520901543892-q0pq3air9ff6aqd0khm0u6v9699qt10q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD03RYmpS__fMvMbtkrnkxjaaeXGGy1sI0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "520901543892-q0pq3air9ff6aqd0khm0u6v9699qt10q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
