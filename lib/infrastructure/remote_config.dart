@@ -1,25 +1,18 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 
-class FirebaseRemoteConfig {
-  final FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig;
-  Future<void> _fetchRemoteConfig() async {
-    try {
-      // Set the default values for the remote config variables
-      final defaults = <String, dynamic>{'my_variable': 'default_value'};
-      await _remoteConfig.setDefaults(defaults);
+class FirebaseRemoteConfigClass {
+  final remoteConfig = FirebaseRemoteConfig.instance;
 
-      // Fetch the remote config variables
-      await _remoteConfig.fetch();
-      await _remoteConfig.activate();
-
-      // Get the value of a remote config variable
-      final myVariable = _remoteConfig.getString('my_variable');
-      print('my_variable: $myVariable');
-    } catch (e) {
-      print('Error fetching remote config: $e');
-    }
+  Future initializeConfig() async {
+    await remoteConfig.setConfigSettings(
+      RemoteConfigSettings(
+        fetchTimeout: Duration(seconds: 1),
+        minimumFetchInterval: Duration(seconds: 1),
+      ),
+    );
+    await remoteConfig.fetchAndActivate();
+    var temp = remoteConfig.getString("MyWidget");
+    return temp;
   }
-// final remoteConfig = FirebaseRemoteConfig.instance;
-
 }

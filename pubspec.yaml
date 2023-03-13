@@ -37,9 +37,10 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   bordered_text: ^2.0.0
-  firebase_core: ^2.3.0
-  firebase_remote_config: ^3.0.6
-  firebase_analytics: ^10.1.5
+  firebase_core:
+  firebase_remote_config:
+  firebase_analytics:
+  hexcolor: ^3.0.1
 
 
 dev_dependencies:

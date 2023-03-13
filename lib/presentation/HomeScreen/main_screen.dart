@@ -1,16 +1,39 @@
+import 'package:firebase_remote_config/firebase_remote_config.dart';
+import 'package:firetask/application/widget_map.dart';
 import 'package:firetask/presentation/HomeScreen/widgets/Main_title_card.dart';
 import 'package:firetask/presentation/HomeScreen/widgets/background_card.dart';
 import 'package:firetask/presentation/HomeScreen/widgets/number_title_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-
 import '../../core/colors.dart';
 import '../../core/constants.dart';
+import '../../infrastructure/remote_config.dart';
 
 ValueNotifier<bool> scrollNotifier = ValueNotifier(true);
 
-class ScreenHome extends StatelessWidget {
+class ScreenHome extends StatefulWidget {
   const ScreenHome({Key? key}) : super(key: key);
+
+  @override
+  State<ScreenHome> createState() => _ScreenHomeState();
+}
+
+class _ScreenHomeState extends State<ScreenHome> {
+  List<Widget> serverWidgets = [];
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getVal();
+  }
+
+  getVal() async {
+    var serverJsonList = (await FirebaseRemoteConfigClass().initializeConfig());
+    setState(() {
+      serverWidgets = MapDataToWidget().mapWidgets(serverJsonList);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -75,6 +98,7 @@ class ScreenHome extends StatelessWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
+                                  ...serverWidgets,
                                   Image.network(
                                     'https://play-lh.googleusercontent.com/TBRwjS_qfJCSj1m7zZB93FnpJM5fSpMA_wUlFDLxWAb45T9RmwBvQd5cWR5viJJOhkI',
                                     width: size.width * 0.12,
