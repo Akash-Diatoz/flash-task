@@ -66,22 +66,3 @@ class MainPage extends StatelessWidget {
     );
   }
 }
-
-// class Home extends AnimatedWidget {
-//   final FirebaseRemoteConfig remoteConfig;
-//   Home({required this.remoteConfig}):super(listenable: remoteConfig)
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: FutureBuilder<FirebaseRemoteConfig>(
-//         future: FirebaseRemoteConfigClass().setupRemoteConfig(),
-//         builder: (BuildContext context, AsyncSnapshot<RemoteConfig> snapshot)(
-//         return snapshot.hasData
-//         )
-//
-//       ),
-//     );
-//   }
-//
-// }

@@ -29,6 +29,7 @@ class _ScreenHomeState extends State<ScreenHome> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final user = FirebaseAuth.instance.currentUser!;
+    final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -64,14 +65,29 @@ class _ScreenHomeState extends State<ScreenHome> {
         },
         child: const Icon(Icons.logout),
       ),
-      body: const Center(
-        child: Text(
-          "Welcome message to be shown to users",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+      body: FutureBuilder<FirebaseRemoteConfig>(
+        future: setupRemoteConfig(),
+        builder: (BuildContext context,
+            AsyncSnapshot<FirebaseRemoteConfig> snapshot) {
+          return snapshot.hasData
+              ? Center(child: Text(remoteConfig.getString('welcome_message')))
+              : Container(
+                  child: Text("No data available"),
+                );
+        },
       ),
     );
   }
+}
+
+Future<FirebaseRemoteConfig> setupRemoteConfig() async {
+  final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
+
+  await remoteConfig.fetch();
+  await remoteConfig.activate();
+
+//testing
+  print(remoteConfig.getString("welcome_message"));
+
+  return remoteConfig;
 }
