@@ -39,7 +39,7 @@ dependencies:
   bordered_text: ^2.0.0
   firebase_core:
   firebase_remote_config:
-  firebase_analytics:
+  firebase_analytics: ^10.1.5
   hexcolor: ^3.0.1
   get_it: ^7.2.0
   carousel_slider: ^4.1.1

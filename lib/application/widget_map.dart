@@ -16,9 +16,9 @@ class MapDataToWidget {
 
   toWidget(element, type) {
     switch (type) {
-      case 'FlutterLogo':
-        return FlutterLogo(
-          size: (element["size"]).toDouble(),
+      case 'logout_message':
+        return Text(
+          (element["size"]),
         );
       case "Container":
         return Container(
