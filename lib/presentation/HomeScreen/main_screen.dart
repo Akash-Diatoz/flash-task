@@ -98,7 +98,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  ...serverWidgets,
+                                  // ...serverWidgets,
                                   Image.network(
                                     'https://play-lh.googleusercontent.com/TBRwjS_qfJCSj1m7zZB93FnpJM5fSpMA_wUlFDLxWAb45T9RmwBvQd5cWR5viJJOhkI',
                                     width: size.width * 0.12,
