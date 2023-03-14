@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 const kwidht = SizedBox(width: 5);
 
@@ -16,3 +18,35 @@ TextStyle kHomeTitleText = const TextStyle(
   fontSize: 14,
   fontWeight: FontWeight.bold,
 );
+
+showErrorDialog(BuildContext context, String message) {
+  showDialog(
+    context: context,
+    builder: (ctx) => AlertDialog(
+      title: Center(
+        child: Text(
+          'Alert',
+          style: TextStyle(letterSpacing: 0.1, fontWeight: FontWeight.w500),
+        ),
+      ),
+      content: Text(
+        message,
+        style: GoogleFonts.montserrat(
+            textStyle: const TextStyle(
+          color: Colors.redAccent,
+          fontSize: 13,
+          letterSpacing: 0.1,
+          fontWeight: FontWeight.w400,
+        )),
+      ),
+      actions: <Widget>[
+        OutlinedButton(
+          onPressed: () {
+            Navigator.of(ctx).pop();
+          },
+          child: Text('OK!'),
+        )
+      ],
+    ),
+  );
+}
