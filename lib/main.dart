@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
+import 'package:firetask/application/firebase_analytics.dart';
+import 'package:firetask/infrastructure/locator.dart';
 import 'package:firetask/presentation/LoginPage/login_page.dart';
 import 'package:firetask/presentation/HomeScreen/main_screen.dart';
 import 'package:flutter/foundation.dart';
@@ -17,6 +19,7 @@ Future main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  setupLocator();
   runApp(const MyApp());
   FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 }
@@ -31,6 +34,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         navigatorKey: navigatorKey,
+        navigatorObservers: [
+          locator<AnalyticsService>().getAnalyticsObserver()
+        ],
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           appBarTheme: const AppBarTheme(color: kBlackColor),

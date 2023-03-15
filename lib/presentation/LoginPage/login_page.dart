@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firetask/presentation/HomeScreen/main_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import '../../../core/constants.dart';
 import '../../main.dart';
 
@@ -150,13 +149,35 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     onPressed: () async {
                       if (validateAndSave()) {
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (context) => const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
+                        try {
+                          await FirebaseAuth.instance
+                              .signInWithEmailAndPassword(
+                            email: emailController.text.trim(),
+                            password: passwordController.text.trim(),
+                          );
+                        } on FirebaseAuthException catch (e) {
+                          print(e);
+                        }
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => ScreenHome(),
+                            settings: const RouteSettings(name: "Login"),
+                          ),
+                        );
                         signIn();
                       } else {
                         showErrorDialog(
                             context, "Please enter the correct credentials.");
                       }
                     },
-                    child: Text(
+                    child: const Text(
                       "Login",
                       style: TextStyle(color: Colors.white, fontSize: 20),
                     ),

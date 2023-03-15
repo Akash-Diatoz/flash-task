@@ -50,3 +50,6 @@ showErrorDialog(BuildContext context, String message) {
     ),
   );
 }
+
+const String loginRoute = "Login";
+const String logout = "Logout";
