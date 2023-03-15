@@ -6,6 +6,8 @@ import 'package:firetask/application/widget_map.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
+import '../../application/firebase_analytics.dart';
+import '../../infrastructure/locator.dart';
 import '../../infrastructure/remote_config.dart';
 
 class ScreenHome extends StatefulWidget {
@@ -15,6 +17,7 @@ class ScreenHome extends StatefulWidget {
 
 class _ScreenHomeState extends State<ScreenHome> {
   List<Widget> serverWidgets = [];
+  final AnalyticsService _analyticsService = locator<AnalyticsService>();
   @override
   // void initState() {
   //   // TODO: implement initState
@@ -66,7 +69,8 @@ class _ScreenHomeState extends State<ScreenHome> {
                                       Theme.of(context).textTheme.labelLarge,
                                 ),
                                 child: Text("${rawData['btn_yes']}"),
-                                onPressed: () {
+                                onPressed: () async {
+                                  await _analyticsService.logOut();
                                   FirebaseAuth.instance.signOut();
                                   Navigator.of(context).pop();
                                 },

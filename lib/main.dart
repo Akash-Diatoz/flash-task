@@ -21,7 +21,6 @@ Future main() async {
   );
   setupLocator();
   runApp(const MyApp());
-  FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 }
 
 final navigatorKey = GlobalKey<NavigatorState>();
@@ -48,12 +47,13 @@ class MyApp extends StatelessWidget {
             bodyText2: TextStyle(color: Colors.white),
           ),
         ),
-        home: const MainPage());
+        home: MainPage());
   }
 }
 
 class MainPage extends StatelessWidget {
-  const MainPage({Key? key}) : super(key: key);
+  MainPage({Key? key}) : super(key: key);
+  final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +66,7 @@ class MainPage extends StatelessWidget {
             } else if (snapshot.hasError) {
               return showErrorDialog(context, "Something went wrong");
             } else if (snapshot.hasData) {
+              // _analyticsService.logLogin();
               return ScreenHome();
             } else {
               return LoginPage();

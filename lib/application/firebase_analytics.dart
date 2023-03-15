@@ -10,4 +10,12 @@ class AnalyticsService {
   Future logLogin() async {
     await _analytics.logLogin(loginMethod: 'Email');
   }
+
+  Future logOut() async {
+    await _analytics.logEvent(name: "Logout");
+  }
+
+  Future logFailed() async {
+    await _analytics.logEvent(name: "LoginFailed");
+  }
 }

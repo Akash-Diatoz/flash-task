@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firetask/application/firebase_analytics.dart';
+import 'package:firetask/infrastructure/locator.dart';
 import 'package:firetask/presentation/HomeScreen/main_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../../core/constants.dart';
 import '../../main.dart';
 
@@ -12,6 +15,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final AnalyticsService _analyticsService = locator<AnalyticsService>();
   GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
   bool hidePassword = true;
@@ -149,30 +153,9 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     onPressed: () async {
                       if (validateAndSave()) {
-                        showDialog(
-                          context: context,
-                          barrierDismissible: false,
-                          builder: (context) => const Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        );
-                        try {
-                          await FirebaseAuth.instance
-                              .signInWithEmailAndPassword(
-                            email: emailController.text.trim(),
-                            password: passwordController.text.trim(),
-                          );
-                        } on FirebaseAuthException catch (e) {
-                          print(e);
-                        }
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => ScreenHome(),
-                            settings: const RouteSettings(name: "Login"),
-                          ),
-                        );
                         signIn();
                       } else {
+                        await _analyticsService.logFailed();
                         showErrorDialog(
                             context, "Please enter the correct credentials.");
                       }
@@ -184,7 +167,7 @@ class _LoginPageState extends State<LoginPage> {
                     // color: Theme.of(context).accentColor,
                     // shape: StadiumBorder(),
                   ),
-                  SizedBox(height: 15),
+                  const SizedBox(height: 15),
                 ],
               ),
             ),
@@ -211,14 +194,20 @@ class _LoginPageState extends State<LoginPage> {
         child: CircularProgressIndicator(),
       ),
     );
+
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
+      await _analyticsService.logLogin();
+      navigatorKey.currentState!.popUntil((route) => route.isFirst);
     } on FirebaseAuthException catch (e) {
+      await _analyticsService.logFailed();
       print(e);
+      // showErrorDialog(context, "Please enter the correct credentials.");
     }
+    // await _analyticsService.logLogin();
     navigatorKey.currentState!.popUntil((route) => route.isFirst);
   }
 }
