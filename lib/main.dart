@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:firetask/presentation/LoginPage/login_page.dart';
@@ -17,6 +18,7 @@ Future main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(const MyApp());
+  FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 }
 
 final navigatorKey = GlobalKey<NavigatorState>();

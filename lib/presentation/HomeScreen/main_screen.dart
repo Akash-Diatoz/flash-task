@@ -16,18 +16,18 @@ class ScreenHome extends StatefulWidget {
 class _ScreenHomeState extends State<ScreenHome> {
   List<Widget> serverWidgets = [];
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    getVal();
-  }
-
-  getVal() async {
-    var serverJsonList = (await FirebaseRemoteConfigClass().initializeConfig());
-    setState(() {
-      serverWidgets = MapDataToWidget().mapWidgets(serverJsonList);
-    });
-  }
+  // void initState() {
+  //   // TODO: implement initState
+  //   super.initState();
+  //   getVal();
+  // }
+  //
+  // getVal() async {
+  //   var serverJsonList = (await FirebaseRemoteConfigClass().initializeConfig());
+  //   setState(() {
+  //     serverWidgets = MapDataToWidget().mapWidgets(serverJsonList);
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +35,6 @@ class _ScreenHomeState extends State<ScreenHome> {
     final user = FirebaseAuth.instance.currentUser!;
     final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
     var rawData = jsonDecode(remoteConfig.getValue('logout_alert').asString());
-    const defaultValue = {
-      "title": "Hello, World!",
-    };
     return FutureBuilder<FirebaseRemoteConfig>(
       future: setupRemoteConfig(),
       builder:
@@ -84,7 +81,9 @@ class _ScreenHomeState extends State<ScreenHome> {
                     child: Text(remoteConfig.getString('welcome_message'))))
             : Scaffold(
                 body: Container(
-                  child: Text("No data available"),
+                  child: const Center(
+                    child: Text("Please check your connection"),
+                  ),
                 ),
               );
       },
@@ -100,7 +99,7 @@ Future<FirebaseRemoteConfig> setupRemoteConfig() async {
 
 //testing
   print(remoteConfig.getString("welcome_message"));
-  // print(remoteConfig.getString("logout_message"));
+  print(remoteConfig.getString('logout_alert'));
 
   return remoteConfig;
 }
