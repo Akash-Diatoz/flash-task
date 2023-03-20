@@ -1,7 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
 import '../../application/firebase_analytics.dart';
 import '../../infrastructure/locator.dart';
 import '../HomeScreen/main_screen.dart';

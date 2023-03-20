@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../core/constants.dart';
 import '../../main.dart';
+import 'googleSignin.dart';
 import 'googleSigninMethod.dart';
 
 class LoginPage extends StatefulWidget {
@@ -173,7 +174,47 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
           ),
-          GoogleSignInButton()
+          OutlinedButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.white),
+              shape: MaterialStateProperty.all(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(40),
+                ),
+              ),
+            ),
+            onPressed: () async {
+              await _analyticsService.logLogin();
+              GoogleSignInProvider().googleLogin();
+              // final provider =
+              //     Provider.of<GoogleSignInProvider>(context, listen: false);
+              // provider.googleLogin();
+            },
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Image(
+                    image: AssetImage("assets/google_logo.png"),
+                    height: 35.0,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Text(
+                      'Sign in with Google',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.black54,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          )
         ],
       ),
     );
