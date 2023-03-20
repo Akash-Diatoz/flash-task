@@ -5,10 +5,12 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:firetask/application/widget_map.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../application/firebase_analytics.dart';
 import '../../infrastructure/locator.dart';
 import '../../infrastructure/remote_config.dart';
+import '../LoginPage/googleSignin.dart';
 
 class ScreenHome extends StatefulWidget {
   @override
@@ -16,8 +18,11 @@ class ScreenHome extends StatefulWidget {
 }
 
 class _ScreenHomeState extends State<ScreenHome> {
+  late User _user;
+  bool _isSigningOut = false;
   List<Widget> serverWidgets = [];
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
+  final GoogleSignIn googleSignIn = GoogleSignIn();
   @override
   // void initState() {
   //   // TODO: implement initState
@@ -37,6 +42,7 @@ class _ScreenHomeState extends State<ScreenHome> {
     final size = MediaQuery.of(context).size;
     final user = FirebaseAuth.instance.currentUser!;
     final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
+    final GoogleSignIn googleSignIn = GoogleSignIn();
     var rawData = jsonDecode(remoteConfig.getValue('logout_alert').asString());
     return FutureBuilder<FirebaseRemoteConfig>(
       future: setupRemoteConfig(),
@@ -71,7 +77,9 @@ class _ScreenHomeState extends State<ScreenHome> {
                                 child: Text("${rawData['btn_yes']}"),
                                 onPressed: () async {
                                   await _analyticsService.logOut();
-                                  FirebaseAuth.instance.signOut();
+                                  GoogleSignInProvider().logout();
+                                  // googleSignIn.signOut();
+                                  // FirebaseAuth.instance.signOut();
                                   Navigator.of(context).pop();
                                 },
                               ),

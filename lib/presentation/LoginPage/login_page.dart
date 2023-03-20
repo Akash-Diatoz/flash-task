@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../core/constants.dart';
 import '../../main.dart';
+import 'googleSigninMethod.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -172,6 +173,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
           ),
+          GoogleSignInButton()
         ],
       ),
     );
