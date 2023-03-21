@@ -11,6 +11,7 @@ import '../../application/firebase_analytics.dart';
 import '../../domain/loginModel.dart';
 import '../../infrastructure/locator.dart';
 import '../../infrastructure/remote_config.dart';
+import '../../main.dart';
 import '../LoginPage/googleSignin.dart';
 import 'notifier.dart';
 
@@ -28,15 +29,35 @@ class _ScreenHomeState extends State<ScreenHome> {
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
   final GoogleSignIn googleSignIn = GoogleSignIn();
   final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
+  Future<void> syncData() async {
+    // showDialog(
+    //   context: context,
+    //   barrierDismissible: false,
+    //   builder: (context) => const Center(
+    //     child: CircularProgressIndicator(),
+    //   ),
+    // );
+    try {
+      await remoteConfig.fetchAndActivate();
+      final rs = remoteConfig.getString("logout_alert");
+      print("Json Response${rs.toString()}");
+      dataNotifier.value = await util.parseJsonConfig(rs);
+      // hide loading
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     () async {
       await remoteConfig.setConfigSettings(RemoteConfigSettings(
-        fetchTimeout: const Duration(seconds: 10),
+        fetchTimeout: const Duration(seconds: 1),
         minimumFetchInterval: const Duration(hours: 1),
       ));
     }();
+    syncData();
   }
 
   @override
@@ -46,37 +67,6 @@ class _ScreenHomeState extends State<ScreenHome> {
     final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
     remoteConfig.setDefaults(<String, dynamic>{});
     final GoogleSignIn googleSignIn = GoogleSignIn();
-
-    void showLoading(BuildContext context) {
-      showDialog(
-        barrierDismissible: false,
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                CircularProgressIndicator(),
-                SizedBox(height: 8.0),
-                Text('Loading...')
-              ],
-            ),
-          );
-        },
-      );
-    }
-
-    Future<void> _syncData() async {
-      showLoading(context);
-      try {
-        await remoteConfig.fetchAndActivate();
-        final rs = remoteConfig.getString("logout_alert");
-        dataNotifier.value = await util.parseJsonConfig(rs);
-        Navigator.pop(context); // hide loading
-      } catch (e) {
-        print(e);
-      }
-    }
 
     // Map<String, dynamic> mapValues =
     //     json.decode(remoteConfig.getValue("logout_alert").asString());
